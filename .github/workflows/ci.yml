@@ -23,7 +23,7 @@ jobs:
         shell: pwsh
         run: |
           New-Item -ItemType Directory -Force -Path publish
-          Copy-Item src/LeftRightAudioBalancer/bin/LeftRightAudioBalancer.exe publish/
+          Copy-Item bin/LeftRightAudioBalancer.exe publish/
 
       # Run the real exe and verify the startup shortcut smoke test
       - name: Smoke test the published exe

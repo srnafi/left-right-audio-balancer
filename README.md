@@ -45,11 +45,6 @@ Requires Visual Studio 2022 (MSVC) or C++ build tools.
 ```cmd
 build.bat
 ```
-or from `src/LeftRightAudioBalancer`:
-```cmd
-cd src\LeftRightAudioBalancer
-build.bat
-```
 
 ### Via CMake
 ```cmd

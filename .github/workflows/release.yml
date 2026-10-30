@@ -41,7 +41,7 @@ jobs:
         shell: pwsh
         run: |
           New-Item -ItemType Directory -Force -Path publish
-          Copy-Item src/LeftRightAudioBalancer/bin/LeftRightAudioBalancer.exe publish/
+          Copy-Item bin/LeftRightAudioBalancer.exe publish/
 
       - name: Verify the exe runs
         shell: pwsh

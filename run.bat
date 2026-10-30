@@ -1,5 +1,5 @@
 @echo off
-if not exist "%~dp0src\LeftRightAudioBalancer\bin\LeftRightAudioBalancer.exe" (
+if not exist "%~dp0bin\LeftRightAudioBalancer.exe" (
     call "%~dp0build.bat"
 )
-start "" "%~dp0src\LeftRightAudioBalancer\bin\LeftRightAudioBalancer.exe" %*
+start "" "%~dp0bin\LeftRightAudioBalancer.exe" %*

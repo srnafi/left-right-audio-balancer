@@ -15,68 +15,68 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="AppState.h">
+    <ClInclude Include="include\AppState.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="AudioEngine.h">
+    <ClInclude Include="include\AudioEngine.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="AvrcpHelper.h">
+    <ClInclude Include="include\AvrcpHelper.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CardRenderer.h">
+    <ClInclude Include="include\CardRenderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GraphicsResources.h">
+    <ClInclude Include="include\GraphicsResources.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MainWindow.h">
+    <ClInclude Include="include\MainWindow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="resource.h">
+    <ClInclude Include="include\resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SettingsStore.h">
+    <ClInclude Include="include\SettingsStore.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="VectorIcons.h">
+    <ClInclude Include="include\VectorIcons.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Widgets.h">
+    <ClInclude Include="include\Widgets.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="AudioEngine.cpp">
+    <ClCompile Include="src\AudioEngine.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="AvrcpHelper.cpp">
+    <ClCompile Include="src\AvrcpHelper.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CardRenderer.cpp">
+    <ClCompile Include="src\CardRenderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GraphicsResources.cpp">
+    <ClCompile Include="src\GraphicsResources.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="main.cpp">
+    <ClCompile Include="src\main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MainWindow.cpp">
+    <ClCompile Include="src\MainWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="SettingsStore.cpp">
+    <ClCompile Include="src\SettingsStore.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="VectorIcons.cpp">
+    <ClCompile Include="src\VectorIcons.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Widgets.cpp">
+    <ClCompile Include="src\Widgets.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="resource.rc">
+    <ResourceCompile Include="res\resource.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
   </ItemGroup>

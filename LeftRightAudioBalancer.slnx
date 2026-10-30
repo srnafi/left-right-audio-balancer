@@ -1,5 +1,3 @@
 <Solution>
-  <Folder Name="/src/">
-    <Project Path="src/LeftRightAudioBalancer/LeftRightAudioBalancer.vcxproj" />
-  </Folder>
+  <Project Path="LeftRightAudioBalancer.vcxproj" />
 </Solution>

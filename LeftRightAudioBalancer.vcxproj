@@ -21,13 +21,15 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset Condition="'$(PlatformToolset)' == '' and '$(VisualStudioVersion)' >= '18.0'">v145</PlatformToolset>
+    <PlatformToolset Condition="'$(PlatformToolset)' == ''">v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset Condition="'$(PlatformToolset)' == '' and '$(VisualStudioVersion)' >= '18.0'">v145</PlatformToolset>
+    <PlatformToolset Condition="'$(PlatformToolset)' == ''">v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
@@ -58,9 +60,13 @@
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_WINDOWS;UNICODE;_UNICODE;NOMINMAX;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
+    <ResourceCompile>
+      <AdditionalIncludeDirectories>include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
@@ -74,10 +80,14 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_WINDOWS;UNICODE;_UNICODE;NOMINMAX;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <Optimization>MaxSpeed</Optimization>
     </ClCompile>
+    <ResourceCompile>
+      <AdditionalIncludeDirectories>include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
@@ -87,30 +97,30 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="AppState.h" />
-    <ClInclude Include="AudioEngine.h" />
-    <ClInclude Include="AvrcpHelper.h" />
-    <ClInclude Include="CardRenderer.h" />
-    <ClInclude Include="GraphicsResources.h" />
-    <ClInclude Include="MainWindow.h" />
-    <ClInclude Include="resource.h" />
-    <ClInclude Include="SettingsStore.h" />
-    <ClInclude Include="VectorIcons.h" />
-    <ClInclude Include="Widgets.h" />
+    <ClInclude Include="include\AppState.h" />
+    <ClInclude Include="include\AudioEngine.h" />
+    <ClInclude Include="include\AvrcpHelper.h" />
+    <ClInclude Include="include\CardRenderer.h" />
+    <ClInclude Include="include\GraphicsResources.h" />
+    <ClInclude Include="include\MainWindow.h" />
+    <ClInclude Include="include\resource.h" />
+    <ClInclude Include="include\SettingsStore.h" />
+    <ClInclude Include="include\VectorIcons.h" />
+    <ClInclude Include="include\Widgets.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="AudioEngine.cpp" />
-    <ClCompile Include="AvrcpHelper.cpp" />
-    <ClCompile Include="CardRenderer.cpp" />
-    <ClCompile Include="GraphicsResources.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="MainWindow.cpp" />
-    <ClCompile Include="SettingsStore.cpp" />
-    <ClCompile Include="VectorIcons.cpp" />
-    <ClCompile Include="Widgets.cpp" />
+    <ClCompile Include="src\AudioEngine.cpp" />
+    <ClCompile Include="src\AvrcpHelper.cpp" />
+    <ClCompile Include="src\CardRenderer.cpp" />
+    <ClCompile Include="src\GraphicsResources.cpp" />
+    <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\MainWindow.cpp" />
+    <ClCompile Include="src\SettingsStore.cpp" />
+    <ClCompile Include="src\VectorIcons.cpp" />
+    <ClCompile Include="src\Widgets.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="resource.rc" />
+    <ResourceCompile Include="res\resource.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
