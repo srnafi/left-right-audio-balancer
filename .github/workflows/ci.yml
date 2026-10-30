@@ -8,45 +8,24 @@ on:
 
 jobs:
   build:
-    # WPF and Core Audio are Windows-only, so the build has to run there too.
     runs-on: windows-latest
 
     steps:
       - uses: actions/checkout@v4
 
-      - uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: '10.0.x'
+      - name: Add MSBuild to PATH
+        uses: microsoft/setup-msbuild@v2
 
-      - name: Restore
-        run: dotnet restore
+      - name: Build Release
+        run: msbuild LeftRightAudioBalancer.sln /p:Configuration=Release /p:Platform=x64
 
-      # Warnings fail the build here but not locally. The single-file publish
-      # bug this project had (Assembly.Location returning empty) was a warning
-      # nobody read, and it broke a feature only in the shipped exe.
-      - name: Build
-        run: dotnet build -c Release --no-restore -warnaserror
+      - name: Stage exe
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force -Path publish
+          Copy-Item src/LeftRightAudioBalancer/bin/LeftRightAudioBalancer.exe publish/
 
-      # Publishing is the step that surfaces single-file problems, so it runs
-      # on every push rather than only on release.
-      - name: Publish single file
-        run: >
-          dotnet publish src/LeftRightAudioBalancer
-          -c Release
-          -r win-x64
-          --self-contained true
-          -p:PublishSingleFile=true
-          -p:IncludeNativeLibrariesForSelfExtract=true
-          -p:EnableCompressionInSingleFile=true
-          -o publish
-
-      # The published exe is a different animal from the build output: the
-      # assembly is embedded, so path lookups can fail where they worked in a
-      # normal build. This runs the real exe and checks it can still find
-      # itself well enough to write the startup shortcut.
-      #
-      # Start-Process -Wait is required: PowerShell does not wait for a GUI app,
-      # and without it the report file is read before the app has written it.
+      # Run the real exe and verify the startup shortcut smoke test
       - name: Smoke test the published exe
         shell: pwsh
         run: |

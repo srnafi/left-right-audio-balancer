@@ -19,12 +19,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: '10.0.x'
+      - name: Add MSBuild to PATH
+        uses: microsoft/setup-msbuild@v2
 
-      # The tag is the version. Keeping one source of truth stops the exe
-      # reporting a version that does not match the release page.
       - name: Resolve version
         id: version
         shell: pwsh
@@ -37,17 +34,14 @@ jobs:
           "version=$version" >> $env:GITHUB_OUTPUT
           Write-Host "Releasing $tag as $version"
 
-      - name: Publish
-        run: >
-          dotnet publish src/LeftRightAudioBalancer
-          -c Release
-          -r win-x64
-          --self-contained true
-          -p:PublishSingleFile=true
-          -p:IncludeNativeLibrariesForSelfExtract=true
-          -p:EnableCompressionInSingleFile=true
-          -p:Version=${{ steps.version.outputs.version }}
-          -o publish
+      - name: Build Release
+        run: msbuild LeftRightAudioBalancer.sln /p:Configuration=Release /p:Platform=x64
+
+      - name: Stage exe
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force -Path publish
+          Copy-Item src/LeftRightAudioBalancer/bin/LeftRightAudioBalancer.exe publish/
 
       - name: Verify the exe runs
         shell: pwsh
@@ -67,9 +61,6 @@ jobs:
           if (-not (Select-String -Path $report -Pattern 'verdict\s+PASS' -Quiet)) {
             throw 'The published exe failed its smoke test.'
           }
-
-          $info = (Get-Item $exe).VersionInfo
-          Write-Host "File version: $($info.FileVersion)"
 
       - name: Checksum
         shell: pwsh
@@ -94,13 +85,10 @@ jobs:
         run: |
           $tag = '${{ steps.version.outputs.tag }}'
 
-          # A changelog beats one blurb repeated for every version, so notes
-          # live next to the code as docs/release-notes/<tag>.md. Versions with
-          # no file fall back to the boilerplate below.
           $fallback = @(
             'Left and right volume for one Windows output device.'
             ''
-            'Download `LeftRightAudioBalancer.exe` and run it. Self-contained: no runtime to install.'
+            'Download `LeftRightAudioBalancer.exe` and run it. Native Win32 / Direct2D fluent UI: no runtime to install.'
             ''
             'The exe is unsigned, so Windows may warn on first run. Verify the SHA256 above if you want to check the download.'
           ) -join "`n"
