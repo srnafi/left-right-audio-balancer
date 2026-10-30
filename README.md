@@ -2,69 +2,93 @@
 
 [![build](https://github.com/srnafi/left-right-audio-balancer/actions/workflows/ci.yml/badge.svg)](https://github.com/srnafi/left-right-audio-balancer/actions/workflows/ci.yml)
 
-Balancing left and right audio on Windows is buried deep inside legacy Control Panel dialogs behind tabs most people never open. When one ear is louder than the other, fixing it shouldn't mean digging through menus every time.
+Balancing left and right audio on Windows is a pain. The setting exists,
+but it is buried several dialogs deep in Control Panel, behind tabs most
+people never open. When one ear is louder than the other, fixing it means
+finding that panel again, every time.
 
-**Left Right Audio Balancer** puts both channels on a clean, modern floating card right on your desktop.
+This app puts both channels on a small card you keep on the desktop: two
+sliders, one per ear, plus a master that scales both without breaking the
+balance you set.
 
-<p align="center">
-  <img src="docs/screenshot.png" width="340" alt="Left Right Audio Balancer Card">
-</p>
+<img src="docs/screenshot.png" width="340" alt="The card on the desktop">
 
----
+It also fixes the reason per-ear control is often missing. Many Bluetooth
+headsets take volume over AVRCP absolute volume, so Windows hands the level to
+the headset and the endpoint reports a single channel. There is nothing to
+split. The app can turn absolute volume off, which makes Windows own the level
+locally and gives you the left and right channels back.
 
-## ✨ Features
+## Install
 
-- **Per-Ear Sliders:** Adjust Left and Right volume independently or keep them linked with your custom balance offset (e.g. `Linked R -19`).
-- **Live Level Meters:** Bright real-time audio peak bars inside each slider show what is actually playing out of each ear.
-- **Smart Master Volume:** Rescales total volume while preserving your set balance ratio.
-- **One-Click Centre:** Instantly centers audio balance to the average of both channels.
-- **Bluetooth Fix Helper:** Fixes headsets that only show one combined channel by toggling AVRCP absolute volume with one click.
-- **Position Lock:** Lock the card with the padlock button to prevent accidental dragging.
-- **Settings Drawer:** Quick toggle for **Start with Windows**, Bluetooth audio fix, and Quit.
-- **Smart Desktop Placement:** Stays at the back of the desktop, keeping out of the way of your active windows, and remains visible with Win+D (Show Desktop).
+Download `LeftRightAudioBalancer.exe` from the
+[latest release](https://github.com/srnafi/left-right-audio-balancer/releases/latest)
+and run it. It is a standalone 390 KB native binary with no external runtime dependencies.
 
-<p align="center">
-  <img src="docs/settings.png" width="340" alt="Settings Drawer">
-</p>
+The card opens in the bottom-right corner of the desktop the first time. Once
+you drag it somewhere, it comes back there on the next start. Right-click it to
+quit, or use **Quit** in the settings drawer.
 
----
+## Performance
 
-## ⚡ Performance (v1.0 Rewrite)
+The app was rewritten in native C++ with Direct2D to keep resource usage negligible:
+- Working set memory sits at roughly 0.8 MB (down from 100 MB to 250 MB in the original WPF build).
+- The executable is 394 KB, down from a 75 MB self-contained .NET bundle.
+- It idles at 0% CPU, using hardware acceleration only when repainting or animating.
 
-Version 1.0 is a complete overhaul built in **Native C++ with Direct2D**, drastically cutting down system footprint:
+## Using it
 
-| Metric | Previous (WPF .NET) | New v1.0 (Native C++) | Improvement |
-| :--- | :--- | :--- | :--- |
-| **RAM Footprint** | 100 MB – 250+ MB | **~0.8 MB working set** | **>99% less RAM** |
-| **Download Size** | ~75 MB | **~390 KB** | **99.5% smaller** |
-| **Dependencies** | .NET Desktop Runtime | **Zero (Self-contained native Win32)** | Runs out of the box |
-| **Idle CPU** | 0.5% – 2.0% | **0.0%** | Reactive event timers |
-| **Graphics** | WPF Software/Direct3D | **Direct2D Hardware-Accelerated** | Smooth anti-aliased corners |
+Pick your output device from the dropdown at the top. It shows what kind of
+device it is under the name, and swaps in a Bluetooth glyph when the endpoint
+is wireless. The sliders below show that device's left and right volume.
 
----
+**Linked** is on by default. Dragging either slider moves the other by the same
+amount, so the offset between the ears stays put. The footer shows that offset:
+`R -12` means the right ear is twelve points below the left. Turn Linked off to
+move each ear independently. **Centre** sets both to their average.
 
-## 🚀 Download & Install
+**VOL** is the master. It never goes below the loudest ear, and moving it
+rescales both channels by the same ratio, so your balance survives.
 
-Download `LeftRightAudioBalancer.exe` from the [**Latest Release**](https://github.com/srnafi/left-right-audio-balancer/releases/latest).
+Each ear slider carries a live level meter: the bright bar inside the fill
+tracks what is actually coming out of that channel, so you can tell whether a
+quiet side is the setting or the audio.
 
-- **No installation needed:** Just place it anywhere and double-click to run.
-- **Start on Boot:** Click the settings icon (sliders) in the header and toggle **Start with Windows**.
-- The card remembers its desktop position between restarts. Right-click anywhere on the card or use the drawer to quit.
+The **padlock** in the header locks the card in place. While it is locked the
+card cannot be dragged, but every control still works, so clicking a slider
+cannot move the whole window by accident. The lock survives a restart.
 
----
+By default the card sits at the back of the desktop, out of the way of real
+windows, and comes forward when you show the desktop.
 
-## 🎧 Bluetooth Headsets
+## Bluetooth headsets
 
-Many wireless headphones (Sony WH/WF series, AirPods, Galaxy Buds) report only one shared volume slider because Windows delegates volume control to the headphone's built-in amplifier via Bluetooth AVRCP Absolute Volume.
+If a headset shows only one channel, the card says so above the sliders. On a
+Bluetooth device the message carries a **Fix** button.
 
-If your wireless headset shows only one channel:
-1. Open the settings drawer by clicking the sliders icon in the header.
-2. Click **Apply Bluetooth fix** (Windows will prompt for administrator permission).
-3. Reconnect your headset. You now have full independent Left and Right control.
+The fix writes `DisableAbsoluteVolume` under
+`HKLM\SYSTEM\CurrentControlSet\Control\Bluetooth\Audio\AVRCP\CT`. It needs
+administrator rights, so Windows will ask for permission. After it applies,
+reconnect the headset or let the app restart the Bluetooth audio service.
 
----
+This is a machine-wide setting. Revert it from the settings drawer if you would
+rather let the headset control its own volume.
 
-## 🛠️ Building from Source
+## Settings
+
+Click the sliders icon in the header.
+
+<img src="docs/settings.png" width="340" alt="The settings drawer">
+
+- **Start with Windows** adds a shortcut to your Startup folder.
+- **Bluetooth per-ear fix** applies or reverts the registry value above.
+- **Quit** closes the app.
+
+Settings live in `%APPDATA%\LeftRightAudioBalancer\settings.json`. That file
+holds the selected device, the lock and linked states, the start-with-Windows
+flag, and the last card position.
+
+## Build
 
 Requires Visual Studio 2022 (MSVC) or C++ build tools.
 
@@ -72,7 +96,6 @@ Requires Visual Studio 2022 (MSVC) or C++ build tools.
 ```cmd
 build.bat
 ```
-The compiled binary will be placed at `bin\LeftRightAudioBalancer.exe`.
 
 ### Via CMake
 ```cmd
@@ -83,8 +106,18 @@ cmake --build build --config Release
 ### Via Visual Studio
 Open `LeftRightAudioBalancer.sln` in Visual Studio and build `Release | x64`.
 
----
+## How it works
 
-## 📄 License
+Per-ear volume is the per-channel volume of a render endpoint. Windows Core Audio
+exposes it directly through `IMMDeviceEnumerator`, `IAudioEndpointVolume`, and
+`IAudioMeterInformation`.
 
-[MIT](LICENSE) © srnafi
+Rendering uses Direct2D on a 32-bit layered window (`UpdateLayeredWindow`), which
+provides hardware-accelerated anti-aliased rounded corners without a window frame.
+
+The level meter is polled every 16 ms. It jumps straight to a new peak and falls
+back smoothly on each tick, which reads as a decay rather than a flicker.
+
+## License
+
+MIT
